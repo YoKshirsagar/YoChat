@@ -8,7 +8,8 @@
     include "db_connect.php";
     $query = "SELECT * FROM users WHERE username='".$_SESSION["username"]."'";
     $result = mysqli_query($conn, $query);
-    $row = $result->fetch_assoc();  
+    $row = $result->fetch_assoc();
+    $user = $row["name"];
 ?>
 
 <!DOCTYPE html>
@@ -34,36 +35,45 @@
         </header>
 
         <main class="msger-chat">
-            <div class="msg left-msg">
-                <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
-                </div>
+            <?php
+                $query = "SELECT * FROM `chat`";
+                $result = mysqli_query($conn, $query);
+                while($row = $result->fetch_assoc()): 
+            ?>
+                <?php if (!($row["user"] === $user)): ?>
+                    <div class="msg left-msg">
+                        <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)">
+                        </div>
 
-                <div class="msg-bubble">
-                    <div class="msg-info">
-                        <div class="msg-info-name">BOT</div>
-                        <div class="msg-info-time">12:45</div>
-                    </div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name"><?php echo $row["user"]?></div>
+                                <div class="msg-info-time"><?php echo $row["ctime"]?></div>
+                            </div>
 
-                    <div class="msg-text">
-                        Hi, welcome to SimpleChat! Go ahead and send me a message. 😄
+                            <div class="msg-text">
+                                <?php echo $row["msg"]?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                <?php endif; ?>
+                <?php if ($row["user"] == $user): ?>
+                    <div class="msg right-msg">
+                        <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)">
+                        </div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name"><?php echo $row["user"]?></div>
+                                <div class="msg-info-time"><?php echo $row["ctime"]?></div>
+                            </div>
 
-            <div class="msg right-msg">
-                <div class="msg-img" style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)">
-                </div>
-                <div class="msg-bubble">
-                    <div class="msg-info">
-                        <div class="msg-info-name">Sajad</div>
-                        <div class="msg-info-time">12:46</div>
+                            <div class="msg-text">
+                                <?php echo $row["msg"]?>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="msg-text">
-                        You can change your name in JS section!
-                    </div>
-                </div>
-            </div>
+                <?php endif; ?>
+            <?php endwhile; ?>
         </main>
 
         <form class="msger-inputarea">
