@@ -27,7 +27,7 @@
     <section class="msger">
         <header class="msger-header">
             <div class="msger-header-title">
-                <i class="fas fa-comment-alt"></i> Secret Chat - <?php echo $row["name"] ;?>
+                <i class="fas fa-comment-alt"></i> Secret Chat - <?php echo $user ;?>
             </div>
             <div class="msger-header-options">
                 <span><i class="fas fa-cog"></i></span>
@@ -77,10 +77,18 @@
         </main>
 
         <form class="msger-inputarea">
-            <input type="text" class="msger-input" placeholder="Enter your message...">
-            <button type="submit" class="msger-send-btn">Send</button>
+            <input type="text" name="textmsgsent" id="textmsgsent" class="msger-input" placeholder="Enter your message...">
+            <button type="submit" name="submit" id="submit" class="msger-send-btn">Send</button>
         </form>
     </section>
 </body>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    $("#submit").click(function(){
+        let textmsgsent = $("#textmsgsent").val();
+        $.post("postmsg.php", {text: textmsgsent , user: '<?php echo $user; ?>',ip: '<?php echo $_SERVER["REMOTE_ADDR"]?>'},
+        function(data,status){
+            document.getElementByClassName('msg right-msg')[0].innerHTML = data;}); 
+    });
+</script>
 </html>
