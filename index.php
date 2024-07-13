@@ -34,7 +34,7 @@
             </div>
         </header>
 
-        <main class="msger-chat">
+        <main id="scrollid" class="msger-chat">
             <?php
                 $query = "SELECT * FROM `chat`";
                 $result = mysqli_query($conn, $query);
@@ -88,7 +88,11 @@
         let textmsgsent = $("#textmsgsent").val();
         $.post("postmsg.php", {text: textmsgsent , user: '<?php echo $user; ?>',ip: '<?php echo $_SERVER["REMOTE_ADDR"]?>'},
         function(data,status){
-            document.getElementByClassName('msg right-msg')[0].innerHTML = data;}); 
+            document.getElementByClassName('msg right-msg')[0].innerHTML = data;});
     });
+</script>
+<script>
+    let scrollableDiv = document.getElementById('scrollid');
+    scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
 </script>
 </html>
